@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <script src="/socket.io/socket.io.js"></script>
+        <script src="/chat.js" defer></script>
+        <link rel="stylesheet" href="/styles.css" />
+        <title>Chatt</title>
+    </head>
+    <body>
+        <div class="navbar">
+            <a href="/">Hem</a>
+            <a href="/search-book">Sök/Uppdatera bok</a>
+            <a href="/search-author">Visa författare</a>
+            <a href="/create">Registrera ny</a>
+            <a href="/chat">Chatta</a>
+        </div>
+        <div class="wrapper">
+            <div class="title">
+                <h1>Chatta med bibliotekarien</h1>
+            </div>
+            <div class="contact-form">
+                <div class="input-fields">
+                    <div class="msg"></div>
+                    <br />
+                    <input class="input" type="text" id="input" />
+                    <br />
+                    <button id="send" class="btn">Skicka</button>
+                    <br />
+
+                    <ul id="searchResults"></ul>
+                </div>
+            </div>
+        </div>
+        <script>
+            const input = document.getElementById('input');
+            const sendBtn = document.getElementById('send');
+            input.addEventListener('keydown', (event) => {
+                if (event.keyCode === 13) {
+                    event.preventDefault();
+                    sendBtn.click();
+                }
+            });
+        </script>
+    </body>
+</html>

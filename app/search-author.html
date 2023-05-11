@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Sök författare</title>
+        <link rel="stylesheet" href="/styles.css" />
+    </head>
+    <body>
+        <div class="navbar">
+            <a href="/">Hem</a>
+            <a href="/search-book">Sök/Uppdatera bok</a>
+            <a href="/search-author">Visa författare</a>
+            <a href="/create">Registrera ny</a>
+            <a href="/chat">Chatta</a>
+        </div>
+        <div class="wrapper">
+            <div class="title">
+                <h1>Sök författare</h1>
+            </div>
+            <div class="contact-form">
+                <div class="input-fields">
+                    <div class="search-active">
+                        <br />
+                        <label for="keyword">Ange önskad författare, första bokstav på för/efternamn räcker.</label>
+                        <input id="keyword" type="text" class="input" placeholder="Författare" />
+                        <br />
+                        <button id="search">Sök</button>
+                        <br /><br />
+                    </div>
+                    <ul id="searchResults"></ul>
+                </div>
+            </div>
+        </div>
+        <script>
+            const btnSearch = document.querySelector('#search');
+
+            printResults();
+            btnSearch.addEventListener('click', () => {
+                printResults();
+            });
+
+            async function printResults() {
+                const span = document.querySelector('#searchResults');
+                span.innerHTML = '';
+
+                let data = await getResultsByKeyword();
+                let count = 0; // initialize counter
+
+                for (const author of data) {
+                    if (count >= 50) {
+                        // break loop if counter reaches 50
+                        break;
+                    }
+
+                    let p = document.createElement('p');
+
+                    p.id = author.authorId;
+                    p.innerText = 'id. ' + author.authorId + ' - ' + author.lastName + ', ' + author.firstName;
+
+                    span.appendChild(p);
+
+                    count++; // increment counter
+                }
+            }
+
+            function displayUpdate() {
+                // Döljer sökformuläret
+                var search = document.querySelector('.search-active');
+                search.className = 'search-inactive';
+            }
+
+            // Hämtar data baserat på sökord
+            async function getResultsByKeyword() {
+                let keyword = document.querySelector('#keyword').value;
+
+                const options = {
+                    method: 'GET',
+                    headers: {
+                        Accept: 'application/json'
+                    }
+                };
+
+                let response = await fetch(
+                    'http://localhost:3001/author/search?' +
+                        new URLSearchParams({
+                            keyword: keyword
+                        }),
+                    options
+                ).catch((error) => {
+                    console.error(error);
+                });
+
+                let data = await response.json();
+
+                return data;
+            }
+        </script>
+    </body>
+</html>

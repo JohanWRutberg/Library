@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Library</title>
+        <link rel="stylesheet" href="/index-style.css" />
+        <!-- HÄMTA CSS-fil -->
+        <!-- HÄMTA skript -->
+        <script src="/design.js" defer></script>
+        <!-- HÄMTA skript efter inläsning av detta dokument (defer) -->
+    </head>
+    <body>
+        <!DOCTYPE html>
+        <html>
+            <head>
+                <title>Card Effect</title>
+            </head>
+            <body>
+                <nav class="navbar">
+                    <div class="navbar-left">
+                        <a href="/">Hem</a>
+                        <a href="/search-book">Sök/Uppdatera bok</a>
+                        <a href="/search-author">Visa författare</a>
+                        <a href="/create">Registrera ny</a>
+                        <a href="/chat">Chatta</a>
+                    </div>
+                    <div class="navbar-right">
+                        <!-- <h2>Bibblan</h2> -->
+                    </div>
+                </nav>
+
+                <div class="container">
+                    <div class="card">
+                        <div class="face face1">
+                            <div class="content">
+                                <h3>Sök & Uppdatera bok</h3>
+                            </div>
+                        </div>
+                        <div class="face face2">
+                            <div class="content">
+                                <p>Sök efter specifik bok. Uppdatera information om bok eller ta bort bok.</p>
+                                <a href="/search-book" type="button">Ta mig dit</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="face face1">
+                            <div class="content">
+                                <h3>Visa alla författare</h3>
+                            </div>
+                        </div>
+                        <div class="face face2">
+                            <div class="content">
+                                <p>
+                                    Visa alla författare som finns registrerade i databasen. Sök efter specifik
+                                    författare.
+                                </p>
+                                <a href="/search-author" type="button">Ta mig dit</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="face face1">
+                            <div class="content">
+                                <h3>Registrera ny författare/bok</h3>
+                            </div>
+                        </div>
+                        <div class="face face2">
+                            <div class="content">
+                                <p>
+                                    Registrera en ny författare inklusive tillhörande bok, eller registrera en ny bok
+                                    till en redan existerande författare.
+                                </p>
+                                <a href="/create" type="button">Ta mig dit</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </body>
+        </html>
+    </body>
+</html>

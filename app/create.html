@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Registrera</title>
+        <link rel="stylesheet" href="/styles.css" />
+        <!-- HÄMTA CSS-fil -->
+    </head>
+    <body>
+        <div class="navbar">
+            <a href="/">Hem</a>
+            <a href="/search-book">Sök/Uppdatera bok</a>
+            <a href="/search-author">Visa författare</a>
+            <a href="/create">Registrera ny</a>
+            <a href="/chat">Chatta</a>
+        </div>
+        <div class="wrapper">
+            <div class="title">
+                <h1>Registrera författare & bok</h1>
+                <h3>Spara ny författare innan bok skapas för att få författarens ID.</h3>
+            </div>
+
+            <div class="contact-form">
+                <div class="input-fields">
+                    <input
+                        id="firstName"
+                        type="text"
+                        name="firstName"
+                        class="input"
+                        placeholder="Förnamn *"
+                        autofocus
+                    />
+                    <input id="middleName" type="text" name="middleName" class="input" placeholder="Mellannamn" />
+                    <input id="lastName" type="text" name="lastName" class="input" placeholder="Efternamn *" />
+                    <input id="country" type="text" name="country" class="input" placeholder="Land *" />
+                    <p>* Obligatoriska fält</p>
+                    <p class="success"></p>
+                    <br />
+                    <button id="btnSave" type="submit">Spara</button>
+                </div>
+
+                <div class="input-fields">
+                    <input
+                        id="bookTitle"
+                        type="text"
+                        name="bookTitle"
+                        class="input"
+                        placeholder="Boktitel *"
+                        autofocus
+                    />
+
+                    <select
+                        id="bookGenre"
+                        name="bookGenre"
+                        placeholder="Genre *"
+                        class="input"
+                        style="background-color: #333; color: #717171"
+                    >
+                        <option>Genre *</option>
+                        <option value="fantasy">Fantasy</option>
+                        <option value="horror">Horror</option>
+                        <option value="thriller">Thriller</option>
+                        <option value="crime">Crime</option>
+                        <option value="mystery">Mystery</option>
+                        <option value="romance">Romance</option>
+                        <option value="adventure">Adventure</option>
+                        <option value="novel">Novel</option>
+                    </select>
+
+                    <input id="authorId" type="text" name="authorId" class="input" placeholder="Författar ID *" />
+
+                    <input
+                        type="number"
+                        class="input"
+                        placeholder="YYYY *"
+                        min="1900"
+                        max="2023"
+                        id="bookReleaseYear"
+                        name="bookReleaseYear"
+                    />
+
+                    <select
+                        id="bookAvailable"
+                        name="bookAvailable"
+                        placeholder="Available *"
+                        class="input"
+                        style="background-color: #333; color: #717171"
+                    >
+                        <option>Bok tillgänglig/Ej tillgänglig *</option>
+                        <option value="true">true</option>
+                        <option value="false">false</option>
+                    </select>
+                    <!-- <input id="bookAvailable" type="checkbox" class="input" name="bookAvailable" checked /> -->
+                    <p>* Obligatoriska fält</p>
+                    <br />
+                    <p id="book-created"></p>
+                    <br />
+                    <button id="btnSaveTwo" type="submit">Spara</button>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            // Vi lyssnar på en klickhändelse för en spara-knapp och när knappen klickas så utförs det som står inom kodblocket {} nedanför.
+            btnSave.addEventListener('click', () => {
+                // Vi hämtar elementen från DOM som matchar ID:na för förnamn, mellannamn, efternamn och land.
+                var firstName = document.querySelector('#firstName');
+                var middleName = document.querySelector('#middleName');
+                var lastName = document.querySelector('#lastName');
+                var country = document.querySelector('#country');
+                console.log({ firstName: firstName.value });
+                // Vi sätter alternativen för en HTTP POST-förfrågan till en lokal server och inkluderar förnamn, mellannamn, efternamn och land i JSON-format.
+                const options = {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        firstName: firstName.value,
+                        middleName: middleName.value,
+                        lastName: lastName.value,
+                        country: country.value
+                    })
+                };
+                // skickar en POST-förfrågan till adressen med alternativen i variabeln options.
+                fetch('http://localhost:3001/author/add', options)
+                    // Vi väntar på att svar från servern ska komma tillbaka och när det gör det så utförs det som står inom kodblocket nedanför.
+                    .then(async (response) => {
+                        console.log({ response });
+                        // Vi konverterar svarsobjektet från JSON till ett JavaScript-objekt och skriver ut det i konsolen.
+                        const author = await response.json();
+                        console.log({ author });
+                        // Hämtar element från DOM med angivna klass och sätter texten.
+                        const successText = document.querySelector('.success');
+                        successText.innerHTML = 'ID för skapad författare: ' + author.author_id;
+                        // Hämtar element från DOM med angivet ID och sätter värde.
+                        const authorIdInput = document.querySelector('#authorId');
+                        authorIdInput.value = author.author_id;
+                    })
+                    .catch((error) => console.error(error));
+            });
+            // Lyssnar på klickhändelse för andra spara-knappen.
+            btnSaveTwo.addEventListener('click', () => {
+                // Hämtar element från DOM med angivna ID.
+                var btnSave = document.querySelector('#btnSave');
+                var btnSaveTwo = document.querySelector('#btnSaveTwo');
+                var bookTitle = document.querySelector('#bookTitle');
+                var bookGenre = document.querySelector('#bookGenre');
+                var authorId = document.querySelector('#authorId');
+                var bookReleaseYear = document.querySelector('#bookReleaseYear');
+                var bookAvailable = document.querySelector('#bookAvailable');
+                console.log({ bookAvailable: bookAvailable.checked });
+                // Sätter alternativ för HTTP POST-förfrågan i variabeln options. Inkluderar data i JSON-format.
+                const options = {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        bookTitle: bookTitle.value,
+                        bookGenre: bookGenre.value,
+                        authorId: authorId.value,
+                        bookReleaseYear: bookReleaseYear.value,
+                        bookAvailable: bookAvailable.checked
+                    })
+                };
+                // Skickar en POST-förfrågan till adressen i argumentet med alternativen i variabeln options.
+                fetch('http://localhost:3001/book/add', options)
+                    // Väntar på svar från servern och utför kodblocket nedanför när svar mottas.
+                    .then(async (response) => {
+                        const [book] = await response.json();
+                        console.log({ book });
+
+                        const createdText = document.querySelector('#book-created');
+                        console.log(createdText.innerHTML);
+                        // Uppdaterar HTML-elementet med ID #book-created med en sträng som visar att boken har skapats.
+                        createdText.innerHTML = 'Boktitel: ' + book.title + ' har skapats!';
+                        console.log(createdText.innerHTML);
+                    }) // Fångar upp eventuella fel och skriver ut dem i konsolen.
+                    .catch((error) => console.error(error));
+            });
+        </script>
+    </body>
+</html>
